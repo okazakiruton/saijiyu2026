@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>最自由研究：AIとノーコードに挑戦した記録</title>
+<meta name="description" content="クロード・コードを使い、プログラミング知識ゼロからブラウザアプリを3つ作った最自由研究のまとめレポート。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F3F6F5;
+    --grid:#CFE1E6;
+    --ink:#223142;
+    --ink-soft:#4A5A6B;
+    --ink-blue:#2F5FA6;
+    --pen-red:#B5423A;
+    --highlight:#F4C94C;
+    --tape:#E8DFC8;
+    --card-shadow: 0 10px 24px rgba(34,49,66,0.10);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    color:var(--ink);
+    font-family:"Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", sans-serif;
+    background-color:var(--paper);
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size:28px 28px;
+    line-height:1.85;
+    overflow-wrap:break-word;
+    line-break:strict;
+  }
+  .nowrap{white-space:nowrap;}
+  a{color:var(--ink-blue);}
+  .wrap{max-width:920px; margin:0 auto; padding:0 24px;}
+  h1,h2,h3{font-weight:900; margin:0;}
+  .hand{font-family:"Yomogi", "Zen Kaku Gothic New", sans-serif; font-weight:400;}
+
+  /* --- holes / spiral binding --- */
+  .holes{
+    display:flex; justify-content:center; gap:26px;
+    padding-top:18px;
+  }
+  .holes span{
+    width:12px; height:12px; border-radius:50%;
+    background:var(--paper);
+    box-shadow: inset 0 0 0 2px var(--grid), 0 1px 2px rgba(34,49,66,.15);
+  }
+
+  /* --- hero --- */
+  .hero{padding:28px 0 64px; text-align:center; position:relative;}
+  .kicker{
+    font-family:"Yomogi", sans-serif;
+    color:#6BC8C0;
+    font-size:1.1rem;
+    margin:18px 0 0;
+  }
+  .hero h1{
+    font-size:clamp(1.7rem, 4.6vw, 2.7rem);
+    margin:14px auto 0;
+    max-width:22em;
+    line-height:1.5;
+    overflow-wrap:break-word;
+    text-wrap:balance;
+  }
+  .hero h1 .hl{
+    background:linear-gradient(transparent 62%, var(--highlight) 62%);
+    padding:0 .08em;
+  }
+  .hero .lead{
+    max-width:30em; margin:20px auto 0;
+    color:var(--ink-soft); font-size:1rem;
+    overflow-wrap:break-word;
+  }
+
+  section{padding:56px 0;}
+  .section-title{
+    font-size:1.5rem;
+    border-bottom:3px solid var(--ink);
+    display:inline-block;
+    padding-bottom:6px;
+    margin-bottom:28px;
+  }
+  .section-lead{color:var(--ink-soft); max-width:56ch; margin:0 0 28px;}
+
+  /* --- works cards --- */
+  .works{display:grid; gap:26px; grid-template-columns:repeat(3,1fr);}
+  @media (max-width:760px){ .works{grid-template-columns:1fr;} }
+  .card{
+    background:var(--paper);
+    border:1px solid var(--grid);
+    border-radius:4px;
+    padding:26px 22px 22px;
+    box-shadow:var(--card-shadow);
+    position:relative;
+  }
+  .card:nth-child(1){transform:rotate(-1.4deg);}
+  .card:nth-child(2){transform:rotate(1deg);}
+  .card:nth-child(3){transform:rotate(-0.6deg);}
+  .card::before{
+    content:"";
+    position:absolute; top:-10px; left:50%; transform:translateX(-50%) rotate(-3deg);
+    width:64px; height:20px; background:var(--tape); opacity:.85;
+  }
+  .card h3{font-size:1.08rem; margin-bottom:10px;}
+  .card p{font-size:.92rem; color:var(--ink-soft); margin:0 0 18px;}
+  .card .go{
+    font-family:"IBM Plex Mono", monospace;
+    font-size:.82rem;
+    text-decoration:none;
+    border-bottom:1px solid var(--ink-blue);
+    padding-bottom:2px;
+  }
+
+  /* --- journey / 起承転結 --- */
+  .journey{position:relative; margin-top:8px;}
+  .journey::before{
+    content:"";
+    position:absolute; left:7px; top:6px; bottom:6px; width:2px;
+    background-image:linear-gradient(var(--grid) 60%, transparent 0%);
+    background-size:2px 10px;
+  }
+  .beat{position:relative; padding-left:28px; margin-bottom:34px;}
+  .beat:last-child{margin-bottom:0;}
+  .beat::before{
+    content:"";
+    position:absolute; left:2px; top:8px;
+    width:12px; height:12px; border-radius:50%;
+    background:var(--paper); border:2px solid var(--ink-blue);
+  }
+  .beat h4{font-size:1.02rem; margin:2px 0 6px;}
+  .beat p{margin:0; color:var(--ink-soft); font-size:.94rem; max-width:58ch;}
+
+  /* --- reflections --- */
+  .notes{display:grid; gap:20px; grid-template-columns:repeat(2,1fr);}
+  @media (max-width:760px){ .notes{grid-template-columns:1fr;} }
+  .note{
+    border:1.5px dashed var(--pen-red);
+    border-radius:6px;
+    padding:20px 20px 18px;
+    background:rgba(181,66,58,0.04);
+  }
+  .note .tag{
+    display:inline-block;
+    font-family:"Yomogi", sans-serif;
+    color:var(--pen-red);
+    font-size:1rem;
+    margin-bottom:8px;
+    transform:rotate(-1.5deg);
+  }
+  .note p{margin:0; font-size:.93rem; color:var(--ink);}
+
+  footer{padding:56px 0 80px; text-align:center;}
+  .final-stamp{
+    display:inline-block;
+    font-family:"Yomogi", sans-serif;
+    color:var(--pen-red);
+    border:3px solid var(--pen-red);
+    padding:8px 22px;
+    transform:rotate(-3deg);
+    font-size:1.1rem;
+    margin-bottom:22px;
+  }
+  .link-list{
+    display:flex; gap:18px; justify-content:center; flex-wrap:wrap;
+    font-family:"IBM Plex Mono", monospace; font-size:.86rem;
+    margin-bottom:26px;
+  }
+  .credit{color:var(--ink-soft); font-size:.82rem;}
+
+  :focus-visible{outline:3px solid var(--ink-blue); outline-offset:2px;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+  }
+</style>
+</head>
+<body>
+
+<div class="holes" aria-hidden="true">
+  <span></span><span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span><span></span>
+</div>
+
+<header class="hero wrap">
+  <p class="kicker">2026年最自由研究</p>
+  <h1>AIと<span class="hl">ノーコード開発</span>に挑戦してみた記録</h1>
+  <p class="lead"><span class="nowrap">クロード・コード</span>と一緒に、プログラミング知識ゼロからブラウザアプリを3つ作ってみた最自由研究のまとめレポートです。</p>
+</header>
+
+<main>
+  <section class="wrap">
+    <h2 class="section-title">研究の目的</h2>
+    <p class="section-lead">
+      「AIを使えば、コードが書けなくてもちゃんと動くアプリが作れるのか？」を試すのが今回のテーマ。
+      <span class="nowrap">クロード・コード</span>に企画からデザイン、実装まで伴走してもらいながら、ノーコードでの制作にチャレンジしました。
+    </p>
+  </section>
+
+  <section class="wrap" id="works">
+    <h2 class="section-title">完成した制作物</h2>
+    <p class="section-lead">最終的に公開まで至った3つのブラウザアプリです。それぞれ性格の違うテーマで作りました。どれも1回5分以内で内容を確認いただけるかと思うので、あとは最新AI搭載のカシヲ氏にいい感じにお願いしたいと思います。</p>
+    <div class="works">
+      <article class="card">
+        <h3>カシヲ診断</h3>
+        <p>8つの質問に答えると、今日のあなたにぴったりの配信回をタイプ診断。結果はYouTube検索へのリンクになっていて、お気に入りの一本を自分で選べます。</p>
+        <a class="go" href="https://okazakiruton.github.io/kashiwoshindan/" target="_blank" rel="noopener">診断してみる →</a>
+      </article>
+      <article class="card">
+        <h3>ずっちタイマー</h3>
+        <p>配信の休憩時間だけ画面に現れて育つ、たまごっち風の相棒。視聴者のコメントに反応するOBSオーバーレイで、健康的な休憩習慣づくりを後押しします。</p>
+        <a class="go" href="https://okazakiruton.github.io/fans_timer/" target="_blank" rel="noopener">使ってみる →</a>
+      </article>
+      <article class="card">
+        <h3>だいたいこんぐらい</h3>
+        <p>硬貨や乾電池のサイズを、感覚だけを頼りに画面上で操作して当てるミニゲーム。「だいたいこのくらい」の感覚力が試されます。</p>
+        <a class="go" href="https://okazakiruton.github.io/sizesense/" target="_blank" rel="noopener">遊んでみる →</a>
+      </article>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <h2 class="section-title">道のり</h2>
+    <p class="section-lead">ここまでの制作の流れと、作品ごとの裏話。</p>
+    <div class="journey">
+      <div class="beat">
+        <h4>着想・試作期</h4>
+        <p>たまごっち風キャラクターのデザインなど、素材やアイデアをあれこれ試作しながら模索した時期。</p>
+      </div>
+      <div class="beat">
+        <h4>カシヲ診断</h4>
+        <p>推しのゲーム実況者のおすすめ動画へ誘導したくて作成をスタート。ありがたいことに配信の供給量が多く、思いついたジャンルや好きなジャンルを挙げてみたものの、診断結果をどこまで細かく分岐させるか悩んだ。結果表示は当初YouTubeのチャンネル内検索機能を使う設計だったが、スマホのYouTubeアプリにはその機能がないため、「ジャンル名＋カシヲ」でのキーワード検索に代替した。</p>
+      </div>
+      <div class="beat">
+        <h4>ずっちタイマー</h4>
+        <p>当初はポモドーロタイマーとして適宜休憩を取ってもらう指標にすることを検討したが、配信中の活用は自由な配信の妨げになると考え、休憩中だけの遊び機能として実装。水分補給やトイレ休憩を勧めたい気持ちと、コメントが過干渉（ママコメ）にならないようにという配慮の間で悩んだ。カシヲさんの配信はほぼ休憩がなく、休憩中にどんなコメントが流れるか想定できなかったため、直近3配信のコメントを抽出・解析し、当てはまりそうなキーワードを30個ほど洗い出してもらうことで対応した。</p>
+      </div>
+      <div class="beat">
+        <h4>無料枠との付き合い方を模索</h4>
+        <p>改善を重ねるほど会話の履歴が増え、無料枠が窮屈に感じられる場面も。新規チャットを使うなど、ペース配分を工夫するようになった。</p>
+      </div>
+      <div class="beat">
+        <h4>だいたいこんぐらい</h4>
+        <p>最後の1本は肩の力を抜いて、思いつきで「自分が遊びたいゲーム」を作ってみた一作。</p>
+      </div>
+      <div class="beat">
+        <h4>3作品完成、そして公開</h4>
+        <p>カシヲ診断とだいたいこんぐらいを完成させ、3作品を公開。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <h2 class="section-title">研究を終えての感想</h2>
+    <div class="notes">
+      <div class="note">
+        <span class="tag">できること</span>
+        <p>プログラミング知識がなくても、AIがいい感じに仕上げてくれてよかった。</p>
+      </div>
+      <div class="note">
+        <span class="tag">AIっぽさ</span>
+        <p>なんとなくのアイデアでもおしゃれなページを作ってもらえる。ただ、他人が作ったものでも「たぶんAI製だろうな」とわかることがあり、AI作成デザインが「ダサい」と認知される日も近いかもしれない。</p>
+      </div>
+      <div class="note">
+        <span class="tag">無料枠というリズム</span>
+        <p>無料枠の中でやることで、趣味として時間の区切りができたのが逆によかった。次の無料枠までに何を改善するか考えるのが、日々のちょっとした彩りになった一方、それを楽しむための工夫も必要だった。</p>
+      </div>
+      <div class="note">
+        <span class="tag">AIとの会話にも慣れが必要</span>
+        <p>AIとのチャット形式での作成にも不慣れで、最初は作業の途中経過をそのまま送ってしまい、意図がうまく伝わらない「誤爆」に苦労した。</p>
+      </div>
+      <div class="note">
+        <span class="tag">プログラミングとの再会</span>
+        <p>プログラミング経験は大学1年の講義でHello, World!をした記憶止まり。どうして動くのかは分からないなりに、切り貼りの依頼で出来上がっていく感じが、昔ホームページで文字を横にループさせて喜んでいた記憶を思い出させてくれた。ソースコードも見られるので学びにもつなげられそう……とはいえ、そこまではやらない予定。</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <div class="final-stamp">提出</div>
+  <div class="link-list">
+    <a href="https://okazakiruton.github.io/kashiwoshindan/" target="_blank" rel="noopener">カシヲ診断</a>
+    <a href="https://okazakiruton.github.io/fans_timer/" target="_blank" rel="noopener">ずっちタイマー</a>
+    <a href="https://okazakiruton.github.io/sizesense/" target="_blank" rel="noopener">だいたいこんぐらい</a>
+  </div>
+  <p class="credit"><span class="nowrap">クロード・コード</span>と作った、AIノーコード最自由研究の記録</p>
+</footer>
+
+</body>
+</html>
